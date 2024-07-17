@@ -6,6 +6,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    if: "${{ github.event.action != 'labeled' || github.event.label.name == 'tests: run' }}"
     steps: 
       - uses: actions/checkout@v4
       - run: echo 'Lint'
