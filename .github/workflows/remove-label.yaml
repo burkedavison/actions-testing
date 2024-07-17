@@ -6,7 +6,7 @@ on:
   workflow_run:
     workflows: ["Lint"]
     types:
-      - in_progress
+      - requested
 
 jobs:
   remove-label:
