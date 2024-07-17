@@ -6,25 +6,27 @@ on:
   workflow_run:
     workflows: ["Lint"]
     types:
-      - requested
+      - completed
 
 jobs:
   remove-label:
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'pull_request'
     steps:
       - name: Remove PR label
-        if: "${{ contains(github.event.pull_request.labels.*.name, 'tests: run') }}"
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             try {
+              var fs = require('fs');
+              var issue_number = Number(fs.readFileSync('./NR'));
               await github.rest.issues.removeLabel({
                 name: 'tests: run',
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number
+                issue_number: issue_number
               });
             } catch (e) {
-              console.log('Failed to remove label. Another job may have already removed it!');
+              console.log('No such label.');
             }
