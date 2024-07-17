@@ -21,7 +21,7 @@ jobs:
             try {
               var fs = require('fs');
               var issue_number = Number(fs.readFileSync('./NR'));
-              console.log("PR: " + issue_number");
+              console.log("PR: " + issue_number);
               await github.rest.issues.removeLabel({
                 name: 'tests: run',
                 owner: context.repo.owner,
