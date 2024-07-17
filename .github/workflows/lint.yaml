@@ -10,3 +10,12 @@ jobs:
     steps: 
       - uses: actions/checkout@v4
       - run: echo 'Lint'
+
+      - name: Save PR number
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr
+          path: pr/
